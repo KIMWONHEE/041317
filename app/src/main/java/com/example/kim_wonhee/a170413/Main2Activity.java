@@ -71,6 +71,8 @@ public class Main2Activity extends AppCompatActivity {
             intent.putExtra("store", store);
             setResult(RESULT_OK, intent);
             finish();
+        } else if (v.getId() == R.id.btnCancel) {
+            finish();
         }
 
     }

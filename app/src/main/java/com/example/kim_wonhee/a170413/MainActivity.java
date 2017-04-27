@@ -6,9 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,10 +22,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.jar.Attributes;
 
 public class MainActivity extends AppCompatActivity {
 
     ListView listview;
+    EditText search;
+    Button click_Button;
+    Button remove_Button;
 
     ArrayList<String> store = new ArrayList<String>();
     ArrayList<Data> stores = new ArrayList<Data>();
@@ -41,39 +51,38 @@ public class MainActivity extends AppCompatActivity {
 
     void init() {
         listview = (ListView) findViewById(R.id.listview);
+        search = (EditText) findViewById(R.id.editText);
+        click_Button = (Button) findViewById(R.id.button4);
+        remove_Button = (Button) findViewById(R.id.button5);
+
         adapter = new RestAdpater(MainActivity.this, stores);
         listview.setAdapter(adapter);
+
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String search = s.toString();
+                if (search.length() > 0)
+                    listview.setFilterText(search);
+                else
+                    listview.clearTextFilter();
+            }
+        });
+
     }
 
     public void setListView() {
-
         adapter.notifyDataSetChanged();
-
-        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
-
-                AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
-
-                dlg.setTitle("삭제확인");
-                dlg.setIcon(R.drawable.store);
-                dlg.setMessage("선택한 맛집을 정말 삭제할까요? ");
-                dlg.setNegativeButton("취소", null);
-                dlg.setPositiveButton("삭제",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                count--;
-                                stores.remove(position);
-                                adapter.notifyDataSetChanged();
-                                Toast.makeText(getApplicationContext(), "선택한 맛집이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-
-                            }
-                        });
-                dlg.show();
-                return true;
-            }
-        });
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -83,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
 
@@ -93,19 +101,17 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, Main2Activity.class);
             startActivityForResult(intent, REQUEST_MSG_CODE);
         } else if (v.getId() == R.id.button2) {
-            Comparator<String> dataAcs = new Comparator<String>() {
-                @Override
-                public int compare(String o1, String o2) {
-                    return o1.compareToIgnoreCase(o2);
-                }
-            };
-
-            Collections.sort(store, dataAcs);
-            //setListView();
+            adapter.setSort(adapter.NAME);
         } else if (v.getId() == R.id.button3) {
-
+            adapter.setSort(adapter.FOOD);
         } else if (v.getId() == R.id.button4) {
-
+            click_Button.setVisibility(View.GONE);
+            remove_Button.setVisibility(View.VISIBLE);
+            adapter.setCheckBox();
+        } else if (v.getId() == R.id.button5) {
+            remove_Button.setVisibility(View.GONE);
+            click_Button.setVisibility(View.VISIBLE);
+            adapter.setRemove();
         }
 
     }
@@ -123,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
 
 
 

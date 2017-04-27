@@ -111,4 +111,6 @@ public class Data implements Parcelable {
         dest.writeString(page);
         dest.writeString(now);
     }
+
+
 }
