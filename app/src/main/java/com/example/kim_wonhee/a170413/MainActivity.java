@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> store = new ArrayList<String>();
     ArrayList<Data> stores = new ArrayList<Data>();
+    ArrayList<Data> searchstore = new ArrayList<Data>();
+
     RestAdpater adapter;
 
     Data dataset;
@@ -71,11 +73,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String search = s.toString();
-                if (search.length() > 0)
-                    listview.setFilterText(search);
-                else
-                    listview.clearTextFilter();
+                String context = search.getText().toString();
+                adapter.filter(context);
             }
         });
 
@@ -157,9 +156,20 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
-
-
-
+//    public void filter(String Text) {
+//        Text = Text.toLowerCase();
+//        searchstore.clear();
+//        if (Text == "") {
+//            searchstore.addAll(stores);
+//        } else {
+//            for (Data one : stores) {
+//                String name = one.getName();
+//                if (name.toLowerCase().contains(Text)) {
+//                    searchstore.add(one);
+//                }
+//            }
+//        }
+//        adapter.notifyDataSetChanged();
+//    }
 
 }

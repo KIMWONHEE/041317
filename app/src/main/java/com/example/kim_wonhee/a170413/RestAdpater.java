@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.logging.Filter;
 
 /**
  * Created by kim_wonhee on 2017. 4. 13..
@@ -23,7 +24,8 @@ import java.util.Comparator;
 public class RestAdpater extends BaseAdapter {
 
 
-    ArrayList<Data> data;
+    ArrayList<Data> stores;
+    ArrayList<Data> searchdata = new ArrayList<Data>();
     ArrayList<String> store;
     Context c;
 
@@ -37,19 +39,20 @@ public class RestAdpater extends BaseAdapter {
     CheckBox checkBox;
 
 
-    public RestAdpater(Context c, ArrayList<Data> data) {
+
+    public RestAdpater(Context c, ArrayList<Data> stores) {
         this.c = c;
-        this.data = data;
+        this.stores = stores;
     }
 
     @Override
     public int getCount() {
-        return data.size();
+        return stores.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return data.get(position);
+        return stores.get(position);
     }
 
     @Override
@@ -74,9 +77,10 @@ public class RestAdpater extends BaseAdapter {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                 data.get(position).isSelected = isChecked;
+                stores.get(position).isSelected = isChecked;
             }
         });
+
 
         if (CHECK == 1)
             checkBox.setVisibility(View.VISIBLE);
@@ -85,14 +89,14 @@ public class RestAdpater extends BaseAdapter {
             checkBox.setVisibility(View.INVISIBLE);
         }
 
-        textView.setText(data.get(position).getName());
-        textView2.setText(data.get(position).getPhone());
+        textView.setText(stores.get(position).getName());
+        textView2.setText(stores.get(position).getPhone());
 
-        if (data.get(position).getFood().equals("chicken")) {
+        if (stores.get(position).getFood().equals("chicken")) {
             image.setImageResource(R.drawable.chicken);
-        } else if (data.get(position).getFood().equals("pizza")) {
+        } else if (stores.get(position).getFood().equals("pizza")) {
             image.setImageResource(R.drawable.pizza);
-        } else if (data.get(position).getFood().equals("burger")) {
+        } else if (stores.get(position).getFood().equals("burger")) {
             image.setImageResource(R.drawable.burger);
         }
 
@@ -115,10 +119,10 @@ public class RestAdpater extends BaseAdapter {
 
     public void setSort(int sortType) {
         if (sortType == NAME) {
-            Collections.sort(data, nameAsc);
+            Collections.sort(stores, nameAsc);
             this.notifyDataSetChanged();
         } else if (sortType == FOOD) {
-            Collections.sort(data, foodAsc);
+            Collections.sort(stores, foodAsc);
             this.notifyDataSetChanged();
         }
     }
@@ -132,5 +136,21 @@ public class RestAdpater extends BaseAdapter {
         CHECK = 0;
         this.notifyDataSetChanged();
     }
+
+    public void filter(String Text) {
+        Text = Text.toLowerCase();
+        searchdata.clear();
+        if (Text.length() == 0) {
+            searchdata.addAll(stores);
+        } else {
+            for (Data one : stores) {
+                String name = one.getName().toLowerCase();
+                if (name.contains(Text))
+                    searchdata.add(one);
+            }
+        }
+        this.notifyDataSetChanged();
+    }
+
 
 }
