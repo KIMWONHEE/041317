@@ -9,14 +9,15 @@ import android.os.Parcelable;
 
 public class Data implements Parcelable {
 
-    private String name = "";
-    private String food = "";
-    private String phone = "";
-    private String menu1 = "";
-    private String menu2 = "";
-    private String menu3 = "";
-    private String page = "";
-    private String now = "";
+    private String name;
+    private String food;
+    private String phone;
+    private String menu1;
+    private String menu2;
+    private String menu3;
+    private String page;
+    private String now;
+    boolean isSelected = false;
 
 
     public Data(String name, String food, String phone, String menu1, String menu2, String menu3, String page, String now) {
@@ -28,6 +29,7 @@ public class Data implements Parcelable {
         this.menu3 = menu3;
         this.page = page;
         this.now = now;
+        this.isSelected = false;
     }
 
     protected Data(Parcel in) {
@@ -62,6 +64,7 @@ public class Data implements Parcelable {
         this.menu3 = menu3;
         this.page = page;
         this.now = now;
+        this.isSelected = false;
     }
 
     public String getName() {
@@ -94,6 +97,7 @@ public class Data implements Parcelable {
         return this.now;
     }
 
+    public boolean getisSelected() {return this.isSelected; }
 
     @Override
     public int describeContents() {

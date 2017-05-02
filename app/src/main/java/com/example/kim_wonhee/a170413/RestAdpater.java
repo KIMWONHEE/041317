@@ -29,7 +29,7 @@ public class RestAdpater extends BaseAdapter {
 
     int NAME = 0;
     int FOOD = 1;
-    int CHECK = -1;
+    int CHECK = 0;
 
     TextView textView;
     TextView textView2;
@@ -59,6 +59,7 @@ public class RestAdpater extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+
         LayoutInflater inflater = LayoutInflater.from(c);
 
         if (convertView == null) {
@@ -70,28 +71,28 @@ public class RestAdpater extends BaseAdapter {
         image = (ImageView)convertView.findViewById(R.id.imageView);
         checkBox = (CheckBox)convertView.findViewById(R.id.checkBox);
 
-        if (CHECK == -1)
-            checkBox.setVisibility(View.INVISIBLE);
-        else if (CHECK == 1)
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                 data.get(position).isSelected = isChecked;
+            }
+        });
+
+        if (CHECK == 1)
             checkBox.setVisibility(View.VISIBLE);
         else if (CHECK == 0) {
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    data.remove(position);
-                }
-            });
+            checkBox.setChecked(false);
             checkBox.setVisibility(View.INVISIBLE);
         }
 
         textView.setText(data.get(position).getName());
         textView2.setText(data.get(position).getPhone());
 
-        if (data.get(position).getFood().equals("치킨")) {
+        if (data.get(position).getFood().equals("chicken")) {
             image.setImageResource(R.drawable.chicken);
-        } else if (data.get(position).getFood().equals("피자")) {
+        } else if (data.get(position).getFood().equals("pizza")) {
             image.setImageResource(R.drawable.pizza);
-        } else if (data.get(position).getFood().equals("버거")) {
+        } else if (data.get(position).getFood().equals("burger")) {
             image.setImageResource(R.drawable.burger);
         }
 
@@ -130,7 +131,6 @@ public class RestAdpater extends BaseAdapter {
     public void setRemove() {
         CHECK = 0;
         this.notifyDataSetChanged();
-
     }
 
 }

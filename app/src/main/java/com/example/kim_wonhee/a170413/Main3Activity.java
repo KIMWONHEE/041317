@@ -47,11 +47,11 @@ public class Main3Activity extends AppCompatActivity {
         page.setText(store.getPage());
         now.setText(store.getNow());
 
-        if (store.getFood().toString().equals("치킨")) {
+        if (store.getFood().toString().equals("chicken")) {
             image.setImageResource(R.drawable.chicken);
-        } else if (store.getFood().toString().equals("피자")) {
+        } else if (store.getFood().toString().equals("pizza")) {
             image.setImageResource(R.drawable.pizza);
-        } else if (store.getFood().toString().equals("버거")) {
+        } else if (store.getFood().toString().equals("burger")) {
             image.setImageResource(R.drawable.burger);
         }
 

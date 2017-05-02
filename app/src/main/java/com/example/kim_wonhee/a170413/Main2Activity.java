@@ -51,11 +51,11 @@ public class Main2Activity extends AppCompatActivity {
             data_now = sdfnow.format(date);
 
             if (chicken.isChecked()) {
-                data_food = "치킨";
+                data_food = "chicken";
             } else if (pizza.isChecked()) {
-                data_food = "피자";
+                data_food = "pizza";
             } else if (burger.isChecked()) {
-                data_food = "버거";
+                data_food = "burger";
             }
 
             data_name = name.getText().toString();

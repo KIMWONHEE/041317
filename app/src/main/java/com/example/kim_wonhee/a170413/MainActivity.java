@@ -79,6 +79,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        remove_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                remove_Button.setVisibility(View.GONE);
+                click_Button.setVisibility(View.VISIBLE);
+                AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
+
+                dlg.setTitle("삭제확인");
+                dlg.setIcon(R.drawable.store);
+                dlg.setMessage("선택한 맛집을 정말 삭제할까요? ");
+                dlg.setNegativeButton("취소", null);
+                dlg.setPositiveButton("삭제",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                for (int i = (stores.size() - 1); i >= 0; i--) {
+                                    Data one = stores.get(i);
+                                    if (one.getisSelected()) {
+                                        stores.remove(one);
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                    one.isSelected = false;
+                                }
+                                Toast.makeText(getApplicationContext(), "선택한 맛집이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                                adapter.setRemove();
+                            }
+                        });
+                dlg.show();
+            }
+
+        });
+
     }
 
     public void setListView() {
@@ -94,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     public void onMyClick(View v) {
 
         if (v.getId() == R.id.button) {
@@ -108,10 +139,6 @@ public class MainActivity extends AppCompatActivity {
             click_Button.setVisibility(View.GONE);
             remove_Button.setVisibility(View.VISIBLE);
             adapter.setCheckBox();
-        } else if (v.getId() == R.id.button5) {
-            remove_Button.setVisibility(View.GONE);
-            click_Button.setVisibility(View.VISIBLE);
-            adapter.setRemove();
         }
 
     }
